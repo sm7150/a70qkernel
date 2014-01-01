@@ -924,13 +924,18 @@ static ssize_t kgsl_pwrctrl_gpuclk_show(struct device *dev,
 				    struct device_attribute *attr,
 				    char *buf)
 {
-	struct kgsl_device *device = kgsl_device_from_dev(dev);
+	struct kgsl_device *device = dev_get_drvdata(dev);
+	unsigned long freq;
 	struct kgsl_pwrctrl *pwr;
-
-	if (device == NULL)
-		return 0;
+	
 	pwr = &device->pwrctrl;
-	return snprintf(buf, PAGE_SIZE, "%ld\n", kgsl_pwrctrl_active_freq(pwr));
+	
+	if (device->state == KGSL_STATE_SLUMBER)
+		freq = pwr->pwrlevels[pwr->num_pwrlevels - 1].gpu_freq;
+	else
+		freq = kgsl_pwrctrl_active_freq(pwr);
+
+	return scnprintf(buf, PAGE_SIZE, "%ld\n", freq);
 }
 
 static ssize_t __timer_store(struct device *dev, struct device_attribute *attr,
@@ -1456,13 +1461,18 @@ static ssize_t kgsl_pwrctrl_clock_mhz_show(struct device *dev,
 				    struct device_attribute *attr,
 				    char *buf)
 {
-	struct kgsl_device *device = kgsl_device_from_dev(dev);
+	struct kgsl_device *device = dev_get_drvdata(dev);
+	unsigned long freq;
+	struct kgsl_pwrctrl *pwr;
+	
+	pwr = &device->pwrctrl;
+	
+	if (device->state == KGSL_STATE_SLUMBER)
+		freq = pwr->pwrlevels[pwr->num_pwrlevels - 1].gpu_freq;
+	else
+		freq = kgsl_pwrctrl_active_freq(pwr);
 
-	if (device == NULL)
-		return 0;
-
-	return snprintf(buf, PAGE_SIZE, "%ld\n",
-			kgsl_pwrctrl_active_freq(&device->pwrctrl) / 1000000);
+	return scnprintf(buf, PAGE_SIZE, "%ld\n", freq / 1000000);
 }
 
 static ssize_t kgsl_pwrctrl_freq_table_mhz_show(
