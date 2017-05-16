@@ -73,7 +73,7 @@ static void tcp_westwood_init(struct sock *sk)
 	w->cumul_ack = 0;
 	w->reset_rtt_min = 1;
 	w->rtt_min = w->rtt = msecs_to_jiffies(tcp_westwood_init_rtt);
-	w->rtt_win_sx = tcp_time_stamp;
+	w->rtt_win_sx = tcp_jiffies32;
 	w->snd_una = tcp_sk(sk)->snd_una;
 	w->first_ack = 1;
 }
