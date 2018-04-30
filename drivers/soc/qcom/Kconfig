@@ -810,6 +810,14 @@ config MSM_IDLE_STATS_FIRST_BUCKET
 	help
 	  Upper time limit in nanoseconds of first bucket.
 
+config MSM_HOTPLUG
+	bool "MSM hotplug driver"
+	depends on HOTPLUG_CPU
+	default y
+	help
+	  The MSM hotplug driver controls on-/offlining of additional cores based
+	  on current cpu load.
+
 config MSM_IDLE_STATS_BUCKET_SHIFT
 	int "Bucket shift"
 	default 2
