@@ -342,6 +342,7 @@ struct binder_transaction_data_secctx {
 };
 
 #endif /* __KERNEL__ */
+
 struct binder_transaction_data_sg {
 	struct binder_transaction_data transaction_data;
 	binder_size_t buffers_size;
@@ -389,7 +390,6 @@ enum binder_driver_return_protocol {
 	/*
 	 * binder_transaction_data: the received command.
 	 */
-	 
 
 	BR_ACQUIRE_RESULT = _IOR('r', 4, __s32),
 	/*
