@@ -1693,12 +1693,6 @@ static void msm_geni_serial_shutdown(struct uart_port *uport)
 	struct msm_geni_serial_port *msm_port = GET_DEV_PORT(uport);
 	unsigned long flags;
 
-	if (!uart_console(uport)) {
-		if (!msm_port->is_clk_aon)
-			msm_geni_serial_power_on(uport, false);
-		wait_for_transfers_inflight(uport);
-	}
-
 	disable_irq(uport->irq);
 	free_irq(uport->irq, uport);
 	spin_lock_irqsave(&uport->lock, flags);
