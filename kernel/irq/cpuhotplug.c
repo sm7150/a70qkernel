@@ -200,52 +200,6 @@ void irq_migrate_all_off_this_cpu(void)
 		raw_spin_lock(&desc->lock);
 		affinity_broken = migrate_one_irq(desc);
 		raw_spin_unlock(&desc->lock);
-
-		if (affinity_broken) {
-			pr_debug_ratelimited("IRQ %u: no longer affine to CPU%u\n",
-					    irq, smp_processor_id());
-		}
-	}
-}
-
-static void irq_restore_affinity_of_irq(struct irq_desc *desc, unsigned int cpu)
-{
-	struct irq_data *data = irq_desc_get_irq_data(desc);
-	const struct cpumask *affinity = irq_data_get_affinity_mask(data);
-
-	if (!irqd_affinity_is_managed(data) || !desc->action ||
-	    !irq_data_get_irq_chip(data) || !cpumask_test_cpu(cpu, affinity))
-		return;
-
-	if (irqd_is_managed_and_shutdown(data)) {
-		irq_startup(desc, IRQ_RESEND, IRQ_START_COND);
-		return;
-	}
-
-	/*
-	 * If the interrupt can only be directed to a single target
-	 * CPU then it is already assigned to a CPU in the affinity
-	 * mask. No point in trying to move it around.
-	 */
-	if (!irqd_is_single_target(data))
-		irq_set_affinity_locked(data, affinity, false);
-}
-
-/**
- * irq_affinity_online_cpu - Restore affinity for managed interrupts
- * @cpu:	Upcoming CPU for which interrupts should be restored
- */
-int irq_affinity_online_cpu(unsigned int cpu)
-{
-	struct irq_desc *desc;
-	unsigned int irq;
-
-	irq_lock_sparse();
-	for_each_active_irq(irq) {
-		desc = irq_to_desc(irq);
-		raw_spin_lock_irq(&desc->lock);
-		irq_restore_affinity_of_irq(desc, cpu);
-		raw_spin_unlock_irq(&desc->lock);
 	}
 	irq_unlock_sparse();
 
