@@ -1203,6 +1203,8 @@ __nf_conntrack_alloc(struct net *net,
 	if (ct == NULL)
 		goto out;
 
+	kmemleak_not_leak(ct);
+
 	spin_lock_init(&ct->lock);
 #ifdef CONFIG_KNOX_NCM
 	/* START_OF_KNOX_NPA */
