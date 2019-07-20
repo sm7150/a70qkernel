@@ -20,8 +20,19 @@
 #include <linux/sched/task.h>
 #include <uapi/linux/sched/types.h>
 #include <linux/task_work.h>
+#include <linux/cpu.h>
 
 #include "internals.h"
+
+struct irq_desc_list {
+	struct list_head list;
+	struct irq_desc *desc;
+} perf_crit_irqs = {
+	.list = LIST_HEAD_INIT(perf_crit_irqs.list)
+};
+
+static DEFINE_RAW_SPINLOCK(perf_irqs_lock);
+static int perf_cpu_index = -1;
 
 #ifdef CONFIG_IRQ_FORCED_THREADING
 __read_mostly bool force_irqthreads;
@@ -1159,7 +1170,6 @@ static void affine_one_perf_irq(struct irq_desc *desc)
 	int cpu;
 
 	/* Balance the performance-critical IRQs across all perf CPUs */
-	get_online_cpus();
 	while (1) {
 		cpu = cpumask_next_and(perf_cpu_index, cpu_perf_mask,
 				       cpu_online_mask);
@@ -1168,7 +1178,7 @@ static void affine_one_perf_irq(struct irq_desc *desc)
 		perf_cpu_index = -1;
 	}
 	irq_set_affinity_locked(&desc->irq_data, cpumask_of(cpu), true);
-	put_online_cpus();
+
 	perf_cpu_index = cpu;
 }
 
@@ -1313,6 +1323,9 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
 			if (ret)
 				goto out_thread;
 		}
+
+		if (new->flags & IRQF_PERF_CRITICAL)
+			affine_one_perf_thread(new->thread);
 	}
 
 	/*
@@ -1510,9 +1523,8 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
 		/* Set default affinity mask once everything is setup */
 		if (new->flags & IRQF_PERF_CRITICAL)
 			setup_perf_irq_locked(desc);
-			raw_spin_lock(&perf_irqs_lock);
-			affine_one_perf_irq(desc);
-			raw_spin_unlock(&perf_irqs_lock);
+		else
+			setup_affinity(desc, mask);
 
 	} else if (new->flags & IRQF_TRIGGER_MASK) {
 		unsigned int nmsk = new->flags & IRQF_TRIGGER_MASK;
@@ -1667,6 +1679,20 @@ static struct irqaction *__free_irq(unsigned int irq, void *dev_id)
 		if (action->dev_id == dev_id)
 			break;
 		action_ptr = &action->next;
+	}
+
+	if (action->flags & IRQF_PERF_CRITICAL) {
+		struct irq_desc_list *data;
+
+		raw_spin_lock(&perf_irqs_lock);
+		list_for_each_entry(data, &perf_crit_irqs.list, list) {
+			if (data->desc == desc) {
+				list_del(&data->list);
+				kfree(data);
+				break;
+			}
+		}
+		raw_spin_unlock(&perf_irqs_lock);
 	}
 
 	/* Found it - now remove it from the list of entries: */

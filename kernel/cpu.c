@@ -1031,8 +1031,15 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
 
 static int do_cpu_down(unsigned int cpu, enum cpuhp_state target)
 {
+	struct cpumask newmask;
 	int err;
 
+	cpumask_andnot(&newmask, cpu_online_mask, cpumask_of(cpu));
+
+	/* One big cluster CPU and one little cluster CPU must remain online */
+	if (!cpumask_intersects(&newmask, cpu_perf_mask) ||
+	    !cpumask_intersects(&newmask, cpu_lp_mask))
+		return -EINVAL;
 	/*
 	 * When cpusets are enabled, the rebuilding of the scheduling
 	 * domains is deferred to a workqueue context. Make sure
@@ -1257,6 +1264,7 @@ int freeze_secondary_cpus(int primary)
 	int cpu, error = 0;
 
 	cpu_maps_update_begin();
+	unaffine_perf_irqs();
 	if (!cpu_online(primary))
 		primary = cpumask_first(cpu_online_mask);
 	/*
@@ -1346,6 +1354,7 @@ void enable_nonboot_cpus(void)
 	arch_enable_nonboot_cpus_end();
 
 	cpumask_clear(frozen_cpus);
+	reaffine_perf_irqs();
 out:
 	cpu_maps_update_done();
 }
@@ -2174,6 +2183,7 @@ static int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval)
 		cpu_smt_control = ctrlval;
 		arch_smt_update();
 	}
+out:
 	cpu_maps_update_done();
 	return ret;
 }
