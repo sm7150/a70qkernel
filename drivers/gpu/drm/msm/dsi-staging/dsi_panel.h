@@ -169,6 +169,12 @@ struct drm_panel_esd_config {
 	u32 groups;
 };
 
+#define BRIGHTNESS_ALPHA_PAIR_LEN 2
+struct brightness_alpha_pair {
+	u32 brightness;
+	u32 alpha;
+};
+
 struct dsi_panel {
 	const char *name;
 	const char *type;
@@ -217,12 +223,9 @@ struct dsi_panel {
 	bool sync_broadcast_en;
 	int power_mode;
 	enum dsi_panel_physical_type panel_type;
-	
-#if defined(CONFIG_DISPLAY_SAMSUNG)
-	void *panel_private;
-	struct device_node *self_display_of_node;
-	struct dsi_parser_utils self_display_utils;
-#endif
+
+	struct brightness_alpha_pair *fod_dim_lut;
+	u32 fod_dim_lut_count;
 };
 
 static inline bool dsi_panel_ulps_feature_enabled(struct dsi_panel *panel)
@@ -343,5 +346,9 @@ int dsi_panel_tx_cmd_set(struct dsi_panel *panel, enum dsi_cmd_set_type type);
 int ss_dsi_panel_parse_cmd_sets(struct dsi_panel_cmd_set *cmd_sets,
 			struct dsi_panel *panel);
 #endif
+
+int dsi_panel_set_fod_hbm(struct dsi_panel *panel, bool status);
+
+u32 dsi_panel_get_fod_dim_alpha(struct dsi_panel *panel);
 
 #endif /* _DSI_PANEL_H_ */
