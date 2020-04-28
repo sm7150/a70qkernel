@@ -1295,6 +1295,10 @@ int mhi_process_data_event_ring(struct mhi_controller *mhi_cntrl,
 			local_rp->ptr, local_rp->dword[0], local_rp->dword[1]);
 
 		chan = MHI_TRE_GET_EV_CHID(local_rp);
+		if (chan >= mhi_cntrl->max_chan) {
+			MHI_ERR("invalid channel id %u\n", chan);
+			goto next_er_element;
+		}
 		mhi_chan = &mhi_cntrl->mhi_chan[chan];
 
 		if (likely(type == MHI_PKT_TYPE_TX_EVENT)) {
@@ -1305,6 +1309,7 @@ int mhi_process_data_event_ring(struct mhi_controller *mhi_cntrl,
 			event_quota--;
 		}
 
+next_er_element:
 		mhi_recycle_ev_ring_element(mhi_cntrl, ev_ring);
 		local_rp = ev_ring->rp;
 		dev_rp = mhi_to_virtual(ev_ring, er_ctxt->rp);
