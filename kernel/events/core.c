@@ -11544,15 +11544,13 @@ int perf_event_restart_events(unsigned int cpu)
 
 static void perf_event_exit_cpu_context(int cpu)
 {
-	struct perf_cpu_context *cpuctx;
+ 	struct perf_cpu_context *cpuctx;
 	struct perf_event_context *ctx;
-	struct perf_event *event, *event_tmp;
-	unsigned long flags;
+ 	unsigned long flags;
 	struct pmu *pmu;
 
-	mutex_lock(&pmus_lock);
-	per_cpu(is_hotplugging, cpu) = true;
-	list_for_each_entry(pmu, &pmus, entry) {
+	idx = srcu_read_lock(&pmus_srcu);
+	list_for_each_entry_rcu(pmu, &pmus, entry) {
 		cpuctx = per_cpu_ptr(pmu->pmu_cpu_context, cpu);
 		ctx = &cpuctx->ctx;
 
