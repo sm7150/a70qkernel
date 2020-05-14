@@ -50,11 +50,12 @@ static unsigned int get_input_boost_freq(struct cpufreq_policy *policy)
 	unsigned int freq;
 
 	if (cpumask_test_cpu(policy->cpu, cpu_lp_mask))
-		freq = CONFIG_INPUT_BOOST_FREQ_LP;
+		freq = max(CONFIG_INPUT_BOOST_FREQ_LP, CONFIG_MIN_FREQ_LP);
 	else if (cpumask_test_cpu(policy->cpu, cpu_perf_mask))
-		freq = CONFIG_INPUT_BOOST_FREQ_PERF;
+		freq = max(CONFIG_INPUT_BOOST_FREQ_PERF, CONFIG_MIN_FREQ_PERF);
 	else
-		freq = CONFIG_INPUT_BOOST_FREQ_PERFP;
+		freq = policy->min;
+
 	return min(freq, policy->max);
 }
 
@@ -243,9 +244,12 @@ static int cpu_notifier_cb(struct notifier_block *nb, unsigned long action,
 	if (test_bit(INPUT_BOOST, &b->state)) {
 		store_min_freq(policy);
 		policy->min = get_input_boost_freq(policy);
-		boosting = true;
-		return NOTIFY_OK;
-	}
+	else if (cpumask_test_cpu(policy->cpu, cpu_lp_mask))
+		policy->min = CONFIG_MIN_FREQ_LP;
+	else if (cpumask_test_cpu(policy->cpu, cpu_perf_mask))
+		policy->min = CONFIG_MIN_FREQ_PERF;
+	else
+		policy->min = policy->cpuinfo.min_freq;
 
 	if (boosting) {
 		policy->min = read_min_freq(policy);
