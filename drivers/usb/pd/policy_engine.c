@@ -3313,6 +3313,10 @@ static void usbpd_sm(struct work_struct *w)
 		ret = pd_send_msg(pd, MSG_SOURCE_CAPABILITIES, default_src_caps,
 				ARRAY_SIZE(default_src_caps), SOP_MSG);
 		if (ret) {
+			if (pd->pd_connected) {
+				usbpd_set_state(pd, PE_SEND_SOFT_RESET);
+				break;
+			}
 			pd->caps_count++;
 			if (pd->caps_count >= PD_CAPS_COUNT) {
 				usbpd_dbg(&pd->dev, "Src CapsCounter exceeded, disabling PD\n");
