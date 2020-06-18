@@ -804,6 +804,7 @@ EXPORT_SYMBOL(qmi_rmnet_qos_exit);
 static struct workqueue_struct  *rmnet_ps_wq;
 static struct rmnet_powersave_work *rmnet_work;
 static bool rmnet_work_quit;
+static bool rmnet_work_inited;
 static LIST_HEAD(ps_list);
 
 struct rmnet_powersave_work {
@@ -1010,6 +1011,7 @@ void qmi_rmnet_work_init(void *port)
 	rmnet_work_quit = false;
 	qmi_rmnet_work_set_active(rmnet_work->port, 1);
 	queue_delayed_work(rmnet_ps_wq, &rmnet_work->work, PS_INTERVAL);
+	rmnet_work_inited = true;
 }
 EXPORT_SYMBOL(qmi_rmnet_work_init);
 
@@ -1018,7 +1020,7 @@ void qmi_rmnet_work_maybe_restart(void *port)
 	struct qmi_info *qmi;
 
 	qmi = (struct qmi_info *)rmnet_get_qmi_pt(port);
-	if (unlikely(!qmi))
+	if (unlikely(!qmi || !rmnet_work_inited))
 		return;
 
 	if (!test_and_set_bit(PS_WORK_ACTIVE_BIT, &qmi->ps_work_active))
@@ -1034,6 +1036,8 @@ void qmi_rmnet_work_exit(void *port)
 	rmnet_work_quit = true;
 	synchronize_rcu();
 
+	rmnet_work_inited = false;
+	alarm_cancel(&rmnet_work->atimer);
 	cancel_delayed_work_sync(&rmnet_work->work);
 	destroy_workqueue(rmnet_ps_wq);
 	qmi_rmnet_work_set_active(port, 0);
