@@ -758,16 +758,7 @@ static int security_validtrans_handle_fail(struct context *ocontext,
 out:
 	kfree(o);
 	kfree(n);
-	kfree(t);
-
-// [ SEC_SELINUX_PORTING_COMMON
-#ifdef CONFIG_ALWAYS_ENFORCE
-#if !defined(CONFIG_RKP_KDP)
-    selinux_enforcing = 1;
-#endif
-#endif
-// ] SEC_SELINUX_PORTING_COMMON
-			
+	kfree(t);	
 	if (!selinux_enforcing)
 		return 0;
 	return -EPERM;
@@ -1551,13 +1542,6 @@ out:
 	kfree(s);
 	kfree(t);
 	kfree(n);
-// [ SEC_SELINUX_PORTING_COMMON
-#ifdef CONFIG_ALWAYS_ENFORCE
-#if !defined(CONFIG_RKP_KDP)
-    selinux_enforcing = 1;
-#endif
-#endif
-// ] SEC_SELINUX_PORTING_COMMON
 	if (!selinux_enforcing)
 		return 0;
 	return -EACCES;
@@ -1848,14 +1832,6 @@ static inline int convert_context_handle_invalid_context(struct context *context
 {
 	char *s;
 	u32 len;
-
-// [ SEC_SELINUX_PORTING_COMMON
-#ifdef CONFIG_ALWAYS_ENFORCE
-#if !defined(CONFIG_RKP_KDP)
-    selinux_enforcing = 1;
-#endif
-#endif
-// ] SEC_SELINUX_PORTING_COMMON
 
 	if (selinux_enforcing)
 		return -EINVAL;
