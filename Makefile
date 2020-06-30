@@ -311,8 +311,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 ARCH		?= $(SUBARCH)
-CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)
-
+CROSS_COMPILE	?=/home/AzureUser/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
 SRCARCH 	:= $(ARCH)
@@ -377,7 +376,7 @@ endif
 # Make variables (CC, etc...)
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
-REAL_CC		= $(CROSS_COMPILE)gcc
+REAL_CC		= /home/AzureUser/linux-86/clang-4639204/bin/clang
 LDGOLD		= $(CROSS_COMPILE)ld.gold
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
@@ -489,7 +488,7 @@ endif
 
 ifeq ($(cc-name),clang)
 ifneq ($(CROSS_COMPILE),)
-CLANG_TRIPLE	?= $(CROSS_COMPILE)
+CLANG_TRIPLE	?= /home/AzureUser/linux-86/clang-4639204/bin/aarch64-linux-gnu-
 CLANG_FLAGS	:= --target=$(notdir $(CLANG_TRIPLE:%-=%))
 ifeq ($(shell $(srctree)/scripts/clang-android.sh $(CC) $(CLANG_FLAGS)), y)
 $(error "Clang with Android --target detected. Did you specify CLANG_TRIPLE?")
