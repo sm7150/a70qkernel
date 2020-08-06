@@ -887,17 +887,30 @@ static int mhi_uci_client_release(struct inode *mhi_inode,
 		struct file *file_handle)
 {
 	struct uci_client *uci_handle = file_handle->private_data;
-	int rc = 0;
+	const struct chan_attr *in_chan_attr;
+	int count = 0, i;
+	struct mhi_req *ureq;
 
 	if (!uci_handle)
 		return -EINVAL;
 
-	if (atomic_sub_return(1, &uci_handle->ref_count) == 0) {
-		uci_log(UCI_DBG_DBG,
-				"Last client left, closing channel 0x%x\n",
-				iminor(mhi_inode));
-		if (atomic_read(&uci_handle->mhi_chans_open)) {
-			atomic_set(&uci_handle->mhi_chans_open, 0);
+	in_chan_attr = uci_handle->in_chan_attr;
+	if (!in_chan_attr) {
+		uci_log(UCI_DBG_ERROR, "Null channel attributes for chan %d\n",
+				uci_handle->in_chan);
+		return -EINVAL;
+	}
+
+	if (atomic_sub_return(1, &uci_handle->ref_count)) {
+		uci_log(UCI_DBG_DBG, "Client close chan %d, ref count 0x%x\n",
+			iminor(mhi_inode),
+			atomic_read(&uci_handle->ref_count));
+		return 0;
+	}
+
+	uci_log(UCI_DBG_DBG,
+			"Last client left, closing channel 0x%x\n",
+			iminor(mhi_inode));
 
 			if (!(uci_handle->f_flags & O_SYNC))
 				kfree(uci_handle->wreqs);
@@ -921,7 +934,18 @@ static int mhi_uci_client_release(struct inode *mhi_inode,
 			iminor(mhi_inode),
 			atomic_read(&uci_handle->ref_count));
 	}
-	return rc;
+
+	for (i = 0; i < (in_chan_attr->nr_trbs); i++) {
+		kfree(uci_handle->in_buf_list[i].addr);
+		uci_handle->in_buf_list[i].addr = NULL;
+		uci_handle->in_buf_list[i].buf_size = 0;
+	}
+
+	atomic_set(&uci_handle->read_data_ready, 0);
+	atomic_set(&uci_handle->write_data_ready, 0);
+	file_handle->private_data = NULL;
+
+	return 0;
 }
 
 static void  mhi_parse_state(char *buf, int *nbytes, uint32_t info)
