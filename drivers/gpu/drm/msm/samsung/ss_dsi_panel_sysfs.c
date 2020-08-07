@@ -24,6 +24,9 @@ Copyright (C) 2015, Samsung Electronics. All rights reserved.
 
 #include "ss_dsi_panel_sysfs.h"
 
+/* FOD-HBM dimming */
+#include <linux/fod_status.h>
+
 extern struct kset *devices_kset;
 
 #define MAX_FILE_NAME 128
@@ -3723,6 +3726,88 @@ static ssize_t ss_stm_store(struct device *dev,
 	return size;
 }
 
+static ssize_t ss_partial_disp_show(struct device *dev,
+	struct device_attribute *attr, char *buf)
+{
+	struct samsung_display_driver_data *vdd =
+		(struct samsung_display_driver_data *)dev_get_drvdata(dev);
+	int ret = 0;
+
+	if (!vdd->support_partial_disp)
+		ret = -1;
+	else
+		ret = vdd->partial_disp_val;
+	
+	sprintf(buf, "%d\n", ret);
+
+	LCD_INFO("vdd->partial_disp value : %x\n", ret);
+
+	return strlen(buf);
+}
+
+static ssize_t ss_partial_disp_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t size)
+{
+	struct samsung_display_driver_data *vdd =
+		(struct samsung_display_driver_data *)dev_get_drvdata(dev);
+	int val = 0;
+
+	if (IS_ERR_OR_NULL(vdd)) {
+		LCD_ERR("no vdd");
+		goto end;
+	}
+
+	if (sscanf(buf, "%d", &val) != 1)
+		return size;
+
+	if (!ss_is_ready_to_send_cmd(vdd)) {
+		LCD_ERR("Panel is not ready. Panel State(%d) val(%d)\n", vdd->panel_state, val);
+		return size;
+	}
+
+	if (!vdd->support_partial_disp) {
+		LCD_ERR("Not support partial disp(%d) val(%d)\n", vdd->support_partial_disp, val);
+		return size;
+	}
+
+	/* partial disp on should be applied only in lpm state. */
+	if (val) {
+		if (vdd->panel_state == PANEL_PWR_LPM)
+			ss_send_cmd(vdd, TX_PARTIAL_DISP_ON);
+	} else
+		ss_send_cmd(vdd, TX_PARTIAL_DISP_OFF);
+	
+	vdd->partial_disp_val = val;	
+	
+	LCD_INFO("partial_disp_val : %d, panel_state %d\n", vdd->partial_disp_val, vdd->panel_state);
+
+end:
+	return size;
+}
+
+/* FOD-HBM dimming */
+int fod_dimming_enabled = 0;
+static ssize_t ss_fod_dimming_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t size)
+{
+	if (sscanf(buf, "%d", &fod_dimming_enabled) != 1)
+		return size;
+	
+	LCD_INFO("fod dimming is %s\n", fod_dimming_enabled ? "enabled" : "disabled");
+
+	return size;
+}
+
+static ssize_t ss_fod_dimming_show(struct device *dev,
+	struct device_attribute *attr, char *buf)
+{
+	sprintf(buf, "%d\n", fod_dimming_enabled);
+
+	LCD_INFO("fod_dimming_enabled value : %x\n", fod_dimming_enabled);
+
+	return strlen(buf);
+}
+
 /* SAMSUNG_FINGERPRINT */
 static ssize_t ss_finger_hbm_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t size)
@@ -3922,6 +4007,7 @@ static DEVICE_ATTR(actual_mask_brightness, S_IRUGO | S_IWUSR | S_IWGRP, ss_finge
 static DEVICE_ATTR(reading_mode, S_IRUGO | S_IWUSR | S_IWGRP, ss_reading_mode_show, ss_reading_mode_store);
 static DEVICE_ATTR(fp_green_circle, S_IRUGO | S_IWUSR | S_IWGRP, NULL, ss_fp_green_circle_store);
 static DEVICE_ATTR(conn_det, S_IRUGO | S_IWUSR | S_IWGRP, ss_ub_con_det_show, ss_ub_con_det_store);
+static DEVICE_ATTR(fod_dimming, S_IRUSR | S_IRGRP | S_IWUSR | S_IWGRP, ss_fod_dimming_show, ss_fod_dimming_store);
 
 
 static struct attribute *panel_sysfs_attributes[] = {
@@ -3989,7 +4075,8 @@ static struct attribute *panel_sysfs_attributes[] = {
 	&dev_attr_mask_brightness.attr,
 	&dev_attr_actual_mask_brightness.attr,
 	&dev_attr_conn_det.attr,
-	&dev_attr_reading_mode.attr,
+	&dev_attr_fod_dimming.attr,
+	&dev_attr_dia.attr,
 	&dev_attr_fp_green_circle.attr,
 	NULL
 };
