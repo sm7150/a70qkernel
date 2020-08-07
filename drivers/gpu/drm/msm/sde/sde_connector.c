@@ -11,6 +11,7 @@
  */
 
 #define pr_fmt(fmt)	"[drm:%s:%d] " fmt, __func__, __LINE__
+#include <linux/fod_status.h>
 #include "msm_drv.h"
 #include "sde_dbg.h"
 
@@ -687,15 +688,14 @@ int sde_connector_pre_kickoff(struct drm_connector *connector)
 	/* SAMSUNG_FINGERPRINT */
 	display = c_conn->display;
 	vdd = display->panel->panel_private;
-	if (vdd->support_optical_fingerprint) {
-		finger_mask_state = sde_connector_get_property(c_conn->base.state,
-				CONNECTOR_PROP_FINGERPRINT_MASK);
-		vdd->finger_mask_updated = false;
-		if (finger_mask_state != vdd->finger_mask) {
-			vdd->finger_mask = finger_mask_state;
-			vdd->finger_mask_updated = true;
-			SDE_ERROR("[FINGER_MASK]updated finger mask mode %d\n", finger_mask_state);
-		}
+	finger_mask_state = sde_connector_get_property(c_conn->base.state,
+			CONNECTOR_PROP_FINGERPRINT_MASK);
+	vdd->finger_mask_updated = false;
+	if (finger_mask_state != vdd->finger_mask) {
+		SDE_ERROR("[FINGER MASK]updated finger mask mode %d\n", finger_mask_state);
+		vdd->finger_mask_updated = true;
+		vdd->finger_mask = finger_mask_state;
+		fod_dimming_enabled = finger_mask_state;
 	}
 #endif
 
