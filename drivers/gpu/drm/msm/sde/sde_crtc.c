@@ -5322,29 +5322,25 @@ error:
 }
 
 static void sde_crtc_fod_atomic_check(struct sde_crtc_state *cstate,
-		struct plane_state *pstates, int cnt)
+    struct plane_state *pstates, int cnt)
 {
-	uint32_t dim_layer_stage;
+	uint32_t max_layer_stage = 0;
+	bool has_fod_pressed_layer = false;
 	int plane_idx;
+	int stage;
 
-	for (plane_idx = 0; plane_idx < cnt; plane_idx++)
+	for (plane_idx = 0; plane_idx < cnt; plane_idx++) {
 		if (sde_plane_is_fod_layer(pstates[plane_idx].drm_pstate))
-			break;
-
-	if (plane_idx == cnt) {
-		cstate->fod_dim_layer = NULL;
-	} else {
-		dim_layer_stage = pstates[plane_idx].stage;
-		cstate->fod_dim_layer = sde_crtc_setup_fod_dim_layer(cstate,
-				dim_layer_stage);
+			has_fod_pressed_layer = true;
+		if (pstates[plane_idx].stage > max_layer_stage)
+			max_layer_stage = pstates[plane_idx].stage;
 	}
-	
-	if (!cstate->fod_dim_layer)
-		return;
 
-	for (plane_idx = 0; plane_idx < cnt; plane_idx++)
-		if (pstates[plane_idx].stage >= dim_layer_stage)
-			pstates[plane_idx].stage++;
+	if (has_fod_pressed_layer)
+		cstate->fod_dim_layer = sde_crtc_setup_fod_dim_layer(cstate,
+			max_layer_stage + 1);
+	else
+		cstate->fod_dim_layer = NULL;
 }
 
 static int sde_crtc_atomic_check(struct drm_crtc *crtc,
