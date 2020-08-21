@@ -3798,16 +3798,6 @@ static ssize_t ss_fod_dimming_store(struct device *dev,
 	return size;
 }
 
-static ssize_t ss_fod_dimming_show(struct device *dev,
-	struct device_attribute *attr, char *buf)
-{
-	sprintf(buf, "%d\n", fod_dimming_enabled);
-
-	LCD_INFO("fod_dimming_enabled value : %x\n", fod_dimming_enabled);
-
-	return strlen(buf);
-}
-
 /* SAMSUNG_FINGERPRINT */
 static ssize_t ss_finger_hbm_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t size)
@@ -4007,7 +3997,9 @@ static DEVICE_ATTR(actual_mask_brightness, S_IRUGO | S_IWUSR | S_IWGRP, ss_finge
 static DEVICE_ATTR(reading_mode, S_IRUGO | S_IWUSR | S_IWGRP, ss_reading_mode_show, ss_reading_mode_store);
 static DEVICE_ATTR(fp_green_circle, S_IRUGO | S_IWUSR | S_IWGRP, NULL, ss_fp_green_circle_store);
 static DEVICE_ATTR(conn_det, S_IRUGO | S_IWUSR | S_IWGRP, ss_ub_con_det_show, ss_ub_con_det_store);
-static DEVICE_ATTR(fod_dimming, S_IRUSR | S_IRGRP | S_IWUSR | S_IWGRP, ss_fod_dimming_show, ss_fod_dimming_store);
+
+/* FOD-HBM dimming */
+static DEVICE_ATTR(fod_dimming, S_IRUGO | S_IWUSR | S_IWGRP, NULL, ss_fod_dimming_store);
 
 
 static struct attribute *panel_sysfs_attributes[] = {
