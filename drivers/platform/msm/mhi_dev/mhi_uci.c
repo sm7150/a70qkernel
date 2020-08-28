@@ -244,16 +244,24 @@ static const struct chan_attr uci_chan_attr_table[] = {
 		TRB_MAX_DATA_SIZE,
 		MAX_NR_TRBS_PER_CHAN,
 		MHI_DIR_OUT,
-		mhi_uci_adb_client_cb,
-		NULL
+		mhi_uci_generic_client_cb,
+		NULL,
+		NULL,
+		false,
+		true,
+		50
 	},
 	{
 		MHI_CLIENT_ADB_IN,
 		TRB_MAX_DATA_SIZE,
 		MAX_NR_TRBS_PER_CHAN,
 		MHI_DIR_IN,
-		mhi_uci_adb_client_cb,
-		"android_adb"
+		mhi_uci_generic_client_cb,
+		"android_adb",
+		NULL,
+		false,
+		true,
+		50
 	},
 };
 
