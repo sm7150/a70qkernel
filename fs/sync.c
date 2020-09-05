@@ -477,10 +477,6 @@ static int do_fsync(unsigned int fd, int datasync)
 	struct fd f;
 	int ret = -EBADF;
 
-#ifdef CONFIG_ONEPLUS_HEALTHINFO
-	unsigned long oneplus_fsync_time = jiffies;
-#endif
-
 	if (!fsync_enabled)
 		return 0;
 
