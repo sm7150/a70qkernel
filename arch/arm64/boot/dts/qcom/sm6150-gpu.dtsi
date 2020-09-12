@@ -54,7 +54,7 @@
 		qcom,min-access-length = <32>;
 
 		/* size in bytes */
-		qcom,snapshot-size = <1048576>;
+		qcom,snapshot-size = <0x200000>;
 
 		/* base addr, size */
 		qcom,gpu-qdss-stm = <0x161c0000 0x40000>;
