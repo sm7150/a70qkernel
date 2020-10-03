@@ -422,22 +422,23 @@ ui_print "   /    ___/ ____ /   /_/  _//   /__";
 ui_print "  /    /    /   //   _____/ /   ___/";
 ui_print " /    /    /   //   /      /   /___";
 ui_print "/___ /  __/___//___/      /_______/";
-ui_print "      /    /_/    _/";
-ui_print "     /    //   _/  ___________________________________________";
-ui_print "    /        _/   /   ____/   / /   _    \   /   /   ____/   /";
-ui_print "   /        \_   /   /__ /   /_/  _/      \ /   /   /__ /   /";
-ui_print "  /    /\    \__/   ___//   _____//   /\   v   /   ___//   /";
-ui_print " /    /  \         /___/   /     /   /  \     /   /___/   /_____";
-ui_print "/____/    \_______________/     /___/    \___/_______/_________/";
 ui_print " " " " "Fire Kernel Build: Official | Active";
 ui_print "Fire Kernel Version: Revision 2.5";
+ui_print " ";
 ui_print "Fire Kernel Edition: SE | SuperEdition";
+ui_print " ";
 ui_print "Fire Kernel Linux Version: 4.14.117x | X Edition";
-ui_print "Fire Kernel Owner & Maintainer: Icemax13@Telegram | firemax13@xda-developers@github";
-ui_print "Fire Kernel Contributor: CEREBRO@Telegram | priyesh2@github";
-ui_print " Breath Fire mixed with Performance & Stability with this FireKernel!";
-ui_print " " " " "Thanks to...";
-ui_print "osm0sis@github@xda-developers with this awesome anykernel3"
+ui_print " ";
+ui_print "Fired by: Icemax13@Telegram";
+ui_print "Fired by: firemax13@xda-developers";
+ui_print "Fired by: firemax13@github";
+ui_print "Fired by: CEREBRO@Telegram | priyesh2@github";
+ui_print " " " ";
+ui_print " Breath Blazing Fire!";
+ui_print " " " ";
+ui_print " " " " "Special Thanks to:";
+ui_print "osm0sis | @github | @xda-developers"
+ui_print " ";
 
 setup_env;
 
@@ -445,7 +446,10 @@ do_devicecheck;
 do_versioncheck;
 do_levelcheck;
 
+ui_print " " " ";
+ui_print " " " ";
 ui_print "Flashing & Installing Blazing Fire Kernel...";
+ui_print " " " ";
 CORE=$($BB grep -oE 'ak.*core.sh' anykernel.sh);
 test -f tools/$CORE || $BB ln -s $AKHOME/tools/ak*-core.sh $AKHOME/tools/$CORE;
 PATH="$AKHOME/bin:$PATH" home=$AKHOME $BB ash anykernel.sh $2;
@@ -463,4 +467,6 @@ if [ "$(file_getprop anykernel.sh do.cleanup)" == 1 ]; then
 fi;
 
 ui_print " " " " "Done! Enjoy the FIRE Breathing Performance Kernel!";
-ui_print " " " Thank you for choosing Fire Kernel! — Ice Destroyer"
+ui_print " ";
+ui_print " ""Thank you for choosing Fire Kernel! — Ice Destroyer";
+ui_print " " " " "F" "I" "R" "E" " "
