@@ -416,8 +416,8 @@ ui_print " " "FireKernel Official Build" " " " ";
 ui_print " " " " " " " ";
 ui_print "       __________";
 ui_print "      /        _/___";
-ui_print "     /   _____/    /____  _____________";
-ui_print "    /   /___  ____/    / /   _/   ____/";
+ui_print "     /    ____/    /____  _____________";
+ui_print "    /    /__  ____/    / /   _/   ____/";
 ui_print "   /    ___/ ____ /   /_/  _//   /__";
 ui_print "  /    /    /   //   _____/ /   ___/";
 ui_print " /    /    /   //   /      /   /___";
@@ -468,5 +468,5 @@ fi;
 
 ui_print " " " " "Done! Enjoy the FIRE Breathing Performance Kernel!";
 ui_print " ";
-ui_print " ""Thank you for choosing Fire Kernel! — Ice Destroyer";
+ui_print " " "Thank you for choosing Fire Kernel! — Ice Destroyer";
 ui_print " " " " "F" "I" "R" "E" " "
