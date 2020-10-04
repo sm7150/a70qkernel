@@ -413,16 +413,19 @@ if [ -f version ]; then
   ui_print " ";
 fi;
 ui_print " " "FireKernel Official Build" " " " ";
-ui_print " " " " " " " ";
+ui_print " " " " " ";
 ui_print "       __________";
 ui_print "      /        _/___";
-ui_print "     /    ____/    /____  _____________";
-ui_print "    /    /__  ____/    / /   _/   ____/";
+ui_print "     /    ____/    /___________________";
+ui_print "    /    /__  ____/    __    _/   ____/";
 ui_print "   /    ___/ ____ /   /_/  _//   /__";
-ui_print "  /    /    /   //   _____/ /   ___/";
-ui_print " /    /    /   //   /      /   /___";
-ui_print "/___ /  __/___//___/      /_______/";
-ui_print " " " " "Fire Kernel Build: Official | Active";
+ui_print "  /    /    /   //   __   \ /   ___/";
+ui_print " /    /    /   //   /  \   \   /___";
+ui_print "/___ /  __/___//___/    \_________/";
+ui_print "K      E      R      N      E     L";
+ui_print " ";
+ui_print "Fire Kernel Build: Official | Active";
+ui_print " ";
 ui_print "Fire Kernel Version: Revision 2.5";
 ui_print " ";
 ui_print "Fire Kernel Edition: SE | SuperEdition";
@@ -434,8 +437,8 @@ ui_print "Fired by: firemax13@xda-developers";
 ui_print "Fired by: firemax13@github";
 ui_print "Fired by: CEREBRO@Telegram | priyesh2@github";
 ui_print " " " ";
-ui_print " Breath Blazing Fire!";
-ui_print " " " ";
+ui_print "Breath Blazing Fire!";
+ui_print " ";
 ui_print " " " " "Special Thanks to:";
 ui_print "osm0sis | @github | @xda-developers"
 ui_print " ";
@@ -446,10 +449,10 @@ do_devicecheck;
 do_versioncheck;
 do_levelcheck;
 
-ui_print " " " ";
+ui_print " ";
 ui_print " " " ";
 ui_print "Flashing & Installing Blazing Fire Kernel...";
-ui_print " " " ";
+ui_print " ";
 CORE=$($BB grep -oE 'ak.*core.sh' anykernel.sh);
 test -f tools/$CORE || $BB ln -s $AKHOME/tools/ak*-core.sh $AKHOME/tools/$CORE;
 PATH="$AKHOME/bin:$PATH" home=$AKHOME $BB ash anykernel.sh $2;
@@ -466,7 +469,7 @@ if [ "$(file_getprop anykernel.sh do.cleanup)" == 1 ]; then
   cleanup;
 fi;
 
-ui_print " " " " "Done! Enjoy the FIRE Breathing Performance Kernel!";
+ui_print " " "Done! Enjoy the FIRE Breathing Performance Kernel!";
 ui_print " ";
 ui_print " " "Thank you for choosing Fire Kernel! — Ice Destroyer";
-ui_print " " " " "F" "I" "R" "E" " "
+ui_print " " "F" "I" "R" "E"
