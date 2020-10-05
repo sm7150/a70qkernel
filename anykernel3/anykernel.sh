@@ -4,7 +4,7 @@
 ## AnyKernel setup
 # begin properties
 properties() { '
-kernel.string=ExampleKernel by osm0sis @ xda-developers
+kernel.string=FireKernel by Ice Destroyer @ xda-developers
 do.devicecheck=0
 do.modules=0
 do.systemless=1
