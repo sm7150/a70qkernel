@@ -15,7 +15,7 @@ echo ' '
 KERNEL_PATH="/home/Vevelo/firemax13/a70qkernel"
 BINARIES_PATH="out/arch/arm64/boot/"
 
-FIRE_KERNEL_VERSION="FireKernel_Revision_2.5"
+FIRE_KERNEL_VERSION="FireKernel_Revision_2.7"
 FIRE_KERNEL_EDITION="_SuperEdition"
 FIRE_KERNEL_STATUS="_Official"
 BUILD_DATE="_$(date +%y%m%d)"
