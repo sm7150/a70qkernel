@@ -3726,65 +3726,6 @@ static ssize_t ss_stm_store(struct device *dev,
 	return size;
 }
 
-static ssize_t ss_partial_disp_show(struct device *dev,
-	struct device_attribute *attr, char *buf)
-{
-	struct samsung_display_driver_data *vdd =
-		(struct samsung_display_driver_data *)dev_get_drvdata(dev);
-	int ret = 0;
-
-	if (!vdd->support_partial_disp)
-		ret = -1;
-	else
-		ret = vdd->partial_disp_val;
-	
-	sprintf(buf, "%d\n", ret);
-
-	LCD_INFO("vdd->partial_disp value : %x\n", ret);
-
-	return strlen(buf);
-}
-
-static ssize_t ss_partial_disp_store(struct device *dev,
-		struct device_attribute *attr, const char *buf, size_t size)
-{
-	struct samsung_display_driver_data *vdd =
-		(struct samsung_display_driver_data *)dev_get_drvdata(dev);
-	int val = 0;
-
-	if (IS_ERR_OR_NULL(vdd)) {
-		LCD_ERR("no vdd");
-		goto end;
-	}
-
-	if (sscanf(buf, "%d", &val) != 1)
-		return size;
-
-	if (!ss_is_ready_to_send_cmd(vdd)) {
-		LCD_ERR("Panel is not ready. Panel State(%d) val(%d)\n", vdd->panel_state, val);
-		return size;
-	}
-
-	if (!vdd->support_partial_disp) {
-		LCD_ERR("Not support partial disp(%d) val(%d)\n", vdd->support_partial_disp, val);
-		return size;
-	}
-
-	/* partial disp on should be applied only in lpm state. */
-	if (val) {
-		if (vdd->panel_state == PANEL_PWR_LPM)
-			ss_send_cmd(vdd, TX_PARTIAL_DISP_ON);
-	} else
-		ss_send_cmd(vdd, TX_PARTIAL_DISP_OFF);
-	
-	vdd->partial_disp_val = val;	
-	
-	LCD_INFO("partial_disp_val : %d, panel_state %d\n", vdd->partial_disp_val, vdd->panel_state);
-
-end:
-	return size;
-}
-
 /* FOD-HBM dimming */
 int fod_dimming_enabled = 0;
 static ssize_t ss_fod_dimming_store(struct device *dev,
@@ -4068,7 +4009,7 @@ static struct attribute *panel_sysfs_attributes[] = {
 	&dev_attr_actual_mask_brightness.attr,
 	&dev_attr_conn_det.attr,
 	&dev_attr_fod_dimming.attr,
-	&dev_attr_dia.attr,
+	&dev_attr_reading_mode.attr,
 	&dev_attr_fp_green_circle.attr,
 	NULL
 };
