@@ -38,6 +38,7 @@
 #include "sde_color_processing.h"
 #include "sde_hw_rot.h"
 
+#include "../../../../../drivers/gpu/msm/kgsl_device.h"
 #if defined(CONFIG_DISPLAY_SAMSUNG)
 #include "sde_encoder.h"
 #include "../samsung/ss_dsi_panel_common.h"
