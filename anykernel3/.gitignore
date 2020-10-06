@@ -1,0 +1,11 @@
+*.zip
+*.gz-dtb
+Image
+Image.gz
+Image.gz-dtb
+*.tar
+*.tar.gzip
+*.xz
+
+!.gitignore
+!*.sh
