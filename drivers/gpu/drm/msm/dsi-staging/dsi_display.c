@@ -5073,7 +5073,6 @@ static int dsi_display_sysfs_init(struct dsi_display *display)
 		pr_err("failed to create display device attributes");
 
 	if (display->panel->panel_mode == DSI_OP_CMD_MODE)
-#endif
 		rc = sysfs_create_group(&dev->kobj,
 			&dynamic_dsi_clock_fs_attrs_group);
 
