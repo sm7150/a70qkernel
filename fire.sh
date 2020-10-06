@@ -31,3 +31,6 @@ make -j16 -C $KERNEL_PATH O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CRO
 
 tools/mkdtimg create out/arch/arm64/boot/dtbo.img --page_size=4096 $(find out -name "*.dtbo")
 tools/mkdtimg create out/arch/arm64/boot/recovery_dtbo --page_size=4096 $(find out -name "*.dtbo")
+
+# Clean UP anykernel3 old output binaries & flash zips
+rm -rf anykernel3/*.zip anykernel3/*.gz-dtb
