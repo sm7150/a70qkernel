@@ -11,7 +11,6 @@
  */
 
 #define pr_fmt(fmt)	"[drm:%s:%d] " fmt, __func__, __LINE__
-#include <linux/fod_status.h>
 #include "msm_drv.h"
 #include "sde_dbg.h"
 
@@ -695,7 +694,6 @@ int sde_connector_pre_kickoff(struct drm_connector *connector)
 		SDE_ERROR("[FINGER MASK]updated finger mask mode %d\n", finger_mask_state);
 		vdd->finger_mask_updated = true;
 		vdd->finger_mask = finger_mask_state;
-		fod_dimming_enabled = finger_mask_state;
 	}
 #endif
 
