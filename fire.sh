@@ -6,6 +6,11 @@ set -e
 # No need to change the whole and entire file to set-up kernel path
 KERNEL_PATH=/home/Vevelo/firemax13/a70qkernel
 TOOLCHAIN_PATH=/home/Vevelo/firemax13
+BINARIES_OUT_PATH=out/arch/arm64/boot
+
+# For separated GCC & Clang Path
+GCC_PATH=
+CLANG_PATH=
 
 # Export GCC and ARCH
 export CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
@@ -34,3 +39,6 @@ tools/mkdtimg create out/arch/arm64/boot/recovery_dtbo --page_size=4096 $(find o
 
 # Clean UP anykernel3 old output binaries & flash zips
 rm -rf anykernel3/*.zip anykernel3/*.gz-dtb
+
+# Copy Image.gz-dtb into anykernel3 folder [WIP]
+# cp $KERNEL_PATH/BINARIES_OUT_PATH/Image.gz-dtb anykernel3/Image.gz-dtb
