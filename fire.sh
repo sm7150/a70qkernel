@@ -30,7 +30,7 @@ fi
 
 # Types, paths, and more etc.
 BUILD_CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-KERNEL_LLVM_BIN=$TOOLCHAIN_PATH/clang-r353983c/bin/clang
+KERNEL_LLVM_BIN=$TOOLCHAIN_PATH/clang-r377782d/bin/clang
 CLANG_TRIPLE=aarch64-linux-gnu-
 KERNEL_MAKE_ENV="CONFIG_BUILD_ARM64_DT_OVERLAY=y"
 
