@@ -12,11 +12,12 @@ echo ' '
 echo ' Running & Making Flashable Kernel '
 echo ' '
 
-KERNEL_PATH="/home/Vevelo/firemax13/a70qkernel"
+KERNEL_PATH="/home/$USER/a70qkernel"
 BINARIES_PATH="out/arch/arm64/boot/"
+ANYKERNEL_DIR="$(pwd)"
 
-FIRE_KERNEL_VERSION="FireKernel_Revision_2.7"
-FIRE_KERNEL_EDITION="_SuperEdition"
+FIRE_KERNEL_VERSION="FireKernel_Revision_3.0"
+FIRE_KERNEL_EDITION="_FrostEdition"
 FIRE_KERNEL_STATUS="_Official"
 BUILD_DATE="_$(date +%y%m%d)"
 DEVICE_CODE="_a70q"
