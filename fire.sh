@@ -41,7 +41,7 @@ tools/mkdtimg create $BINARIES_OUT_PATH/dtbo.img --page_size=4096 $(find out -na
 tools/mkdtimg create $BINARIES_OUT_PATH/recovery_dtbo --page_size=4096 $(find out -name "*.dtbo")
 
 # Clean UP anykernel3 old output binaries & flash zips
-rm -rf anykernel3/*.zip anykernel3/*.gz-dtb
+rm -rf AnyKernel3/*.zip AnyKernel3/*.gz-dtb
 
 # Copy Image.gz-dtb into anykernel3 folder [WIP]
-# cp $COMPLETE_OUT_PATH/Image.gz-dtb anykernel3/Image.gz-dtb
+# cp $COMPLETE_OUT_PATH/Image.gz-dtb AnyKernel3/Image.gz-dtb
