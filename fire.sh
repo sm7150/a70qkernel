@@ -35,7 +35,7 @@ CLANG_TRIPLE=aarch64-linux-gnu-
 KERNEL_MAKE_ENV="CONFIG_BUILD_ARM64_DT_OVERLAY=y"
 
 make -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE a70q_eur_open_defconfig
-make -j16 -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
+make -j8 -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
 
 tools/mkdtimg create $BINARIES_OUT_PATH/dtbo.img --page_size=4096 $(find out -name "*.dtbo")
 tools/mkdtimg create $BINARIES_OUT_PATH/recovery_dtbo --page_size=4096 $(find out -name "*.dtbo")
