@@ -24,8 +24,13 @@ if [ "$2" == "do-overlay" ]; then
 	export CONFIG_BUILD_ARM64_DT_OVERLAY=y
 fi
 
-fi [ "$1" == "clean" ]; then
+if [ "$1" == "clean" ]; then
 	rm -rf out
+fi
+
+# Clean UP anykernel3 old output binaries & flash zips
+if [ "$1" == "clean" ]; then
+        rm -rf AnyKernel3/*.zip AnyKernel3/*.gz-dtb
 fi
 
 # Output hacking & tricking
@@ -43,11 +48,6 @@ make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC
 
 if [ "$2" == "do-overlay" ]; then
 	tools/mkdtimg create $BINARIES_OUT_PATH/dtbo.img --page_size=4096 $(find out -name "*.dtbo")
-fi
-
-# Clean UP anykernel3 old output binaries & flash zips
-fi [ "$1" == "clean" ]; then
-	rm -rf AnyKernel3/*.zip AnyKernel3/*.gz-dtb
 fi
 
 # Copy Image.gz-dtb into anykernel3 folder [WIP]
