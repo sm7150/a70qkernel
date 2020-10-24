@@ -10,6 +10,7 @@ KERNEL_PATH=$(pwd)
 TOOLCHAIN_PATH=/home/$USER
 BINARIES_OUT_PATH=out/arch/arm64/boot
 COMPLETE_OUT_PATH=$KERNEL_PATH/$BINARIES_OUT_PATH
+DEFCONFIG=a70q_eur_open_defconfig
 
 # For separated GCC & Clang Path
 # GCC_PATH=
@@ -19,10 +20,7 @@ COMPLETE_OUT_PATH=$KERNEL_PATH/$BINARIES_OUT_PATH
 export CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 export ARCH=arm64
 
-# CleanUP Output Folder
 rm -rf out
-rm -rf out
-
 # Output hacking & tricking
 if [ ! -d out ]; then
 	mkdir out
@@ -32,10 +30,9 @@ fi
 BUILD_CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 KERNEL_LLVM_BIN=$TOOLCHAIN_PATH/clang-r377782d/bin/clang
 CLANG_TRIPLE=aarch64-linux-gnu-
-KERNEL_MAKE_ENV="CONFIG_BUILD_ARM64_DT_OVERLAY=y"
 
-make -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE a70q_eur_open_defconfig
-make -j8 -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
+make -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $DEFCONFIG
+make -j8 -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
 
 tools/mkdtimg create $BINARIES_OUT_PATH/dtbo.img --page_size=4096 $(find out -name "*.dtbo")
 tools/mkdtimg create $BINARIES_OUT_PATH/recovery_dtbo --page_size=4096 $(find out -name "*.dtbo")
