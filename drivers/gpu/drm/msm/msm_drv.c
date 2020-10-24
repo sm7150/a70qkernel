@@ -60,6 +60,16 @@
 #define MSM_VERSION_MINOR	2
 #define MSM_VERSION_PATCHLEVEL	0
 
+#if defined(CONFIG_DISPLAY_SAMSUNG)
+#if 0
+int __msm_drm_notifier_call_chain(unsigned long event, void *data)
+{
+	return blocking_notifier_call_chain(&msm_drm_notifier_list,
+					event, data);
+}
+#endif
+#endif
+
 atomic_t resume_pending;
 wait_queue_head_t resume_wait_q;
 static struct kmem_cache *kmem_vblank_work_pool;
