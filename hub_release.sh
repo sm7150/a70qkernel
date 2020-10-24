@@ -4,12 +4,12 @@ set -e
 
 # For Hub Release Action & Less efforts
 
-VER="3.0"
-EDITION="FrostEdition"
-ED="FE"
+VER="3.3"
+EDITION="FrostExtremeEdition"
+ED="FEE"
 RELEASE_NAME="FireKernel Official Rev $VER $EDITION for Galaxy A70"
 TAG="$VER$ED"
-TAG_COMMIT="039fd38777b77e5dd6bd05d63dd7a37dc2d5f561"
+TAG_COMMIT="$1"
 
 git remote -v
 
