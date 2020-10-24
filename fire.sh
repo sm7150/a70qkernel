@@ -20,7 +20,14 @@ DEFCONFIG=a70q_eur_open_defconfig
 export CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 export ARCH=arm64
 
-rm -rf out
+if [ "$2" == "do-overlay" ]; then
+	export CONFIG_BUILD_ARM64_DT_OVERLAY=y
+fi
+
+fi [ "$1" == "clean" ]; then
+	rm -rf out
+fi
+
 # Output hacking & tricking
 if [ ! -d out ]; then
 	mkdir out
@@ -31,14 +38,17 @@ BUILD_CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-
 KERNEL_LLVM_BIN=$TOOLCHAIN_PATH/clang-r377782d/bin/clang
 CLANG_TRIPLE=aarch64-linux-gnu-
 
-make -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $DEFCONFIG
-make -j8 -C $(pwd) O=$KERNEL_PATH/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
+make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $DEFCONFIG
+make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
 
-tools/mkdtimg create $BINARIES_OUT_PATH/dtbo.img --page_size=4096 $(find out -name "*.dtbo")
-tools/mkdtimg create $BINARIES_OUT_PATH/recovery_dtbo --page_size=4096 $(find out -name "*.dtbo")
+if [ "$2" == "do-overlay" ]; then
+	tools/mkdtimg create $BINARIES_OUT_PATH/dtbo.img --page_size=4096 $(find out -name "*.dtbo")
+fi
 
 # Clean UP anykernel3 old output binaries & flash zips
-rm -rf AnyKernel3/*.zip AnyKernel3/*.gz-dtb
+fi [ "$1" == "clean" ]; then
+	rm -rf AnyKernel3/*.zip AnyKernel3/*.gz-dtb
+fi
 
 # Copy Image.gz-dtb into anykernel3 folder [WIP]
 # cp $COMPLETE_OUT_PATH/Image.gz-dtb AnyKernel3/Image.gz-dtb
