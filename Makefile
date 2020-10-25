@@ -694,7 +694,7 @@ else
 KBUILD_CFLAGS   += -O2
 endif
 
-ifeq ($(cc-name),clang)
+ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 KBUILD_CFLAGS	+= $(call cc-option, -mllvm -polly) \
 		   $(call cc-option, -mllvm -polly-run-dce) \
 		   $(call cc-option, -mllvm -polly-run-inliner) \
