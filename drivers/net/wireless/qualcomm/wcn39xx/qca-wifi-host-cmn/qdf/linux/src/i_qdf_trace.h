@@ -71,7 +71,7 @@
 		} \
 	} while (0)
 #else
-#define QDF_TRAC(x...) ((void)0)
+#define QDF_TRACE(x...) ((void)0)
 #define QDF_VTRACE(x...) ((void)0)
 #define QDF_TRACE_HEX_DUMP(x...) ((void)0)
 #define __QDF_TRACE_RATE_LIMITED(x...) ((void)0)
