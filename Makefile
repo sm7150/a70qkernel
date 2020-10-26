@@ -682,6 +682,14 @@ KBUILD_CFLAGS   += $(call cc-disable-warning, maybe-uninitialized)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 KBUILD_CFLAGS	+= -O3
+KBUILD_CFLAGS	+= $(call cc-option, -mllvm -polly) \
+		   $(call cc-option, -mllvm -polly-run-dce) \
+		   $(call cc-option, -mllvm -polly-run-inliner) \
+		   $(call cc-option, -mllvm -polly-opt-fusion=max) \
+		   $(call cc-option, -mllvm -polly-ast-use-context) \
+		   $(call cc-option, -mllvm -polly-detect-keep-going) \
+		   $(call cc-option, -mllvm -polly-vectorizer=stripmine) \
+		   $(call cc-option, -mllvm -polly-invariant-load-hoisting)
 endif
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
@@ -692,17 +700,6 @@ ifdef CONFIG_PROFILE_ALL_BRANCHES
 KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,)
 else
 KBUILD_CFLAGS   += -O2
-endif
-
-ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
-KBUILD_CFLAGS	+= $(call cc-option, -mllvm -polly) \
-		   $(call cc-option, -mllvm -polly-run-dce) \
-		   $(call cc-option, -mllvm -polly-run-inliner) \
-		   $(call cc-option, -mllvm -polly-opt-fusion=max) \
-		   $(call cc-option, -mllvm -polly-ast-use-context) \
-		   $(call cc-option, -mllvm -polly-detect-keep-going) \
-		   $(call cc-option, -mllvm -polly-vectorizer=stripmine) \
-		   $(call cc-option, -mllvm -polly-invariant-load-hoisting)
 endif
 
 KBUILD_CFLAGS += $(call cc-ifversion, -lt, 0409, \
