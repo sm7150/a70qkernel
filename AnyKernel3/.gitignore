@@ -3,6 +3,7 @@
 Image
 Image.gz
 Image.gz-dtb
+*.img
 *.tar
 *.tar.gzip
 *.xz
