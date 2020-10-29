@@ -19,5 +19,12 @@ echo " "
 git status
 echo " "
 
-echo "Releasing..."
-hub release create -a $(pwd)/AnyKernel3/*.zip -m "$RELEASE_NAME" -t $TAG_COMMIT $TAG
+echo "Release without commit hashes"
+if [ "$1" == "no-commit" ]; then
+        hub release create -a $(pwd)/AnyKernel3/*.zip -m "$RELEASE_NAME" $TAG
+fi
+
+echo "Releasing with commit hashes"
+if [ "$1" == "$TAG_COMMIT" ]; then
+	hub release create -a $(pwd)/AnyKernel3/*.zip -m "$RELEASE_NAME" -t $TAG_COMMIT $TAG
+fi

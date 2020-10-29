@@ -12,13 +12,14 @@ KERNEL_PATH=$(pwd)
 TOOLCHAIN_PATH=/home/$USER
 BINARIES_OUT_PATH=out/arch/arm64/boot
 COMPLETE_OUT_PATH=$KERNEL_PATH/$BINARIES_OUT_PATH
-DEFCONFIG=a70q_eur_open_defconfig
+DEFCONFIG=fire_defconfig
+CLANG_VEREV=clang-r377782d
 
 #
-##For separated GCC & Clang Path
+## For separated GCC & Clang Path
 #
-# GCC_PATH=
-# CLANG_PATH=
+# GCC_PATH=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+# CLANG_PATH=$TOOLCHAIN_PATH/$CLANG_VEREV/bin/clang
 
 #
 ## Export GCC and ARCH
@@ -32,6 +33,12 @@ export ARCH=arm64
 if [ "$2" == "do-overlay" ]; then
 	export CONFIG_BUILD_ARM64_DT_OVERLAY=y
 fi
+
+#
+## Unexport & Unset some none useful exports
+#
+unset USE_CCACHE=1
+unset CCACHE_EXEC=/usr/bin/ccache
 
 #
 ## Clean OutPut Folder
@@ -58,12 +65,15 @@ fi
 ## Types, paths, and more etc.
 #
 BUILD_CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-KERNEL_LLVM_BIN=$TOOLCHAIN_PATH/clang-r377782d/bin/clang
+KERNEL_LLVM_BIN=$TOOLCHAIN_PATH/$CLANG_VEREV/bin/clang
 CLANG_TRIPLE=aarch64-linux-gnu-
 
 make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $DEFCONFIG
 make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
 
+#
+## Make dtboimages if launched
+#
 if [ "$2" == "do-overlay" ]; then
 	tools/mkdtimg create $BINARIES_OUT_PATH/dtbo.img --page_size=4096 $(find out -name "*.dtbo")
 fi
@@ -71,6 +81,9 @@ fi
 #
 ## Copy Image.gz-dtb into anykernel3 folder [WIP]
 #
-#fi [ "$3" == "do-copy" ]; then
-#	cp $COMPLETE_OUT_PATH/Image.gz-dtb AnyKernel3/Image.gz-dtb
-#if
+if [ "$3" == "do-copy" ]; then
+	cp $COMPLETE_OUT_PATH/Image.gz-dtb AnyKernel3/Image.gz-dtb
+fi
+
+$(pwd) $COMPLETE_OUT_PATH
+echo " " "4.14.183"

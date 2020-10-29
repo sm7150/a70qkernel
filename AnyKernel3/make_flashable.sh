@@ -25,7 +25,7 @@ DEVICE_MODEL="_SM-A705"
 echo " "
 
 echo "Cleaning Up Old Binaries and flash file"
-rm -rfv *.gz-dtb *.zip
+rm -rfv *.gz-dtb *.zip *.img dtbo.img recovery_dtbo
 echo " " " "
 
 echo "Copying Kernel Binaries"
