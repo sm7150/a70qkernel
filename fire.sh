@@ -37,8 +37,8 @@ fi
 #
 ## Unexport & Unset some none useful exports
 #
-unset USE_CCACHE=1
-unset CCACHE_EXEC=/usr/bin/ccache
+unset USE_CCACHE
+unset CCACHE_EXEC
 
 #
 ## Clean OutPut Folder
