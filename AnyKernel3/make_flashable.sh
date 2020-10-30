@@ -16,7 +16,7 @@ BINARIES_PATH="out/arch/arm64/boot/"
 ANYKERNEL_DIR="$(pwd)"
 
 echo "Setting FireKernel Versions"
-FIRE_KERNEL_VERSION="FireKernel_Revision_3.3"
+FIRE_KERNEL_VERSION="FireKernel_Revision_3.5"
 FIRE_KERNEL_EDITION="_FrostExtremeEdition"
 FIRE_KERNEL_STATUS="_Official"
 BUILD_DATE="_$(date +%y%m%d)"

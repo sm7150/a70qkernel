@@ -8,7 +8,7 @@ set -e
 
 echo " "
 echo "Setting Up Proper Release Name"
-VER="3.3"
+VER="3.5"
 EDITION="FrostExtremeEdition"
 ED="FEE"
 RELEASE_NAME="FireKernel Official Rev $VER $EDITION for Galaxy A70"
