@@ -1834,7 +1834,7 @@ static inline int convert_context_handle_invalid_context(struct context *context
 	if (selinux_enforcing)
 		return -EINVAL;
 
-	if (!context_struct_to_string(policydb, context, &s, &len)) {
+	if (!context_struct_to_string(context, &s, &len)) {
 		pr_warn("SELinux:  Context %s would be invalid if enforcing\n",
 			s);
 		kfree(s);
@@ -2107,9 +2107,9 @@ int security_load_policy(void *data, size_t len)
 
 	newpolicydb->len = len;
 	/* If switching between different policy types, log MLS status */
-	if (policydb->mls_enabled && !newpolicydb->mls_enabled)
+	if (policydb.mls_enabled && !newpolicydb->mls_enabled)
 		pr_info("SELinux: Disabling MLS support...\n");
-	else if (!policydb->mls_enabled && newpolicydb->mls_enabled)
+	else if (!policydb.mls_enabled && newpolicydb->mls_enabled)
 		pr_info("SELinux: Enabling MLS support...\n");
 
 	rc = policydb_load_isids(newpolicydb, &newsidtab);
