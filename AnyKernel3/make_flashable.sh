@@ -32,6 +32,15 @@ echo "Copying Kernel Binaries"
 cp -v $KERNEL_PATH/$BINARIES_PATH/Image.gz-dtb Image.gz-dtb
 echo " " " "
 
+if [ "$1" == "incl-dtbo" ]; then
+	echo "Warning Please Edit anykernel.sh to Make dtbo flashable!"
+	nano -c anykernel.sh
+fi
+
+if [ "$1" == "incl-dtbo" ]; then
+	cp -v $KERNEL_PATH/$BINARIES_PATH/dtbo.img dtbo.img
+fi
+
 echo "Making Flashable"
 zip -r9 $FIRE_KERNEL_VERSION$FIRE_KERNEL_STATUS$FIRE_KERNEL_EDITION$DEVICE_CODE$DEVICE_MODEL$BUILD_DATE.zip * -x .git README.md make_flashable.sh ramdisk/placeholder
 echo " " " "
