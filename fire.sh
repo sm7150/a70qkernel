@@ -12,7 +12,13 @@ KERNEL_PATH=$(pwd)
 TOOLCHAIN_PATH=/home/$USER
 BINARIES_OUT_PATH=out/arch/arm64/boot
 COMPLETE_OUT_PATH=$KERNEL_PATH/$BINARIES_OUT_PATH
-DEFCONFIG=fire_defconfig
+FIRE_DEFCONFIG=fire_defconfig
+R1Q_DEFCONFIG=r1q_eur_open_defconfig
+M51_DEFCONFIG=m51_eur_open_defconfig
+A70Q_DEFCONFIG=a70q_eur_open_defconfig
+A71_DEFCONFIG=a71_eur_open_defconfig
+SM7150_DEF=sm7150_sec_defconfig
+SM6150_DEF=sm6150_sec_defconfig
 CLANG_VEREV=clang-r377782d
 
 #
@@ -43,14 +49,14 @@ unset CCACHE_EXEC
 #
 ## Clean OutPut Folder
 #
-if [ "$1" == "do-clean" ]; then
+if [ "$2" == "-c" ]; then
 	rm -rf out
 fi
 
 #
 ## Clean UP anykernel3 old output binaries & flash zips
 #
-if [ "$1" == "do-clean" ]; then
+if [ "$2" == "-c" ]; then
         rm -rf AnyKernel3/*.zip AnyKernel3/*.gz-dtb AnyKernel3/dtbo.img
 fi
 
@@ -68,22 +74,48 @@ BUILD_CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-
 KERNEL_LLVM_BIN=$TOOLCHAIN_PATH/$CLANG_VEREV/bin/clang
 CLANG_TRIPLE=aarch64-linux-gnu-
 
-make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $DEFCONFIG
-make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
+if [ "$1" == "-a70q" ]; then
+	make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $FIRE_DEFCONFIG
+fi
+if [ "$1" == "-a70q" ]; then
+	make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
+fi
+if [ "$1" == "-a71" ]; then
+	make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $A71_DEFCONFIG
+fi
+if [ "$1" == "-a71" ]; then
+	make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
+fi
+if [ "$1" == "-a80" ]; then
+	make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $R1Q_DEFCONFIG
+fi
+if [ "$1" == "-a80" ]; then
+	make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
+fi
+if [ "$1" == "-m51" ]; then
+	make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $M51_DEFCONFIG
+fi
+if [ "$1" == "-m51" ]; then
+	make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
+fi
+
+if [ "$1" == "$2" ]; then
+	^C
+fi
 
 #
 ## Make dtboimages if launched
 #
-if [ "$2" == "do-overlay" ]; then
+if [ "$3" == "-dv" ]; then
 	tools/mkdtimg create $BINARIES_OUT_PATH/dtbo.img --page_size=4096 $(find out -name "*.dtbo")
 fi
 
 #
 ## Copy Image.gz-dtb into anykernel3 folder [WIP]
 #
-if [ "$3" == "do-copy" ]; then
+if [ "$4" == "-cp" ]; then
 	cp $COMPLETE_OUT_PATH/Image.gz-dtb AnyKernel3/Image.gz-dtb
 fi
 
-$(pwd) $COMPLETE_OUT_PATH
-echo " " "4.14.183"
+ls $COMPLETE_OUT_PATH
+echo "4.14.183"
