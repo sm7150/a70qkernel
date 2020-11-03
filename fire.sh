@@ -36,7 +36,7 @@ export ARCH=arm64
 #
 ## For dtbo & dtbs compile
 #
-if [ "$2" == "do-overlay" ]; then
+if [ "$3" == "-dv" ]; then
 	export CONFIG_BUILD_ARM64_DT_OVERLAY=y
 fi
 
@@ -76,26 +76,18 @@ CLANG_TRIPLE=aarch64-linux-gnu-
 
 if [ "$1" == "-a70q" ]; then
 	make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $FIRE_DEFCONFIG
-fi
-if [ "$1" == "-a70q" ]; then
 	make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
 fi
 if [ "$1" == "-a71" ]; then
 	make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $A71_DEFCONFIG
-fi
-if [ "$1" == "-a71" ]; then
 	make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
 fi
 if [ "$1" == "-a80" ]; then
 	make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $R1Q_DEFCONFIG
-fi
-if [ "$1" == "-a80" ]; then
 	make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
 fi
 if [ "$1" == "-m51" ]; then
 	make -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE $M51_DEFCONFIG
-fi
-if [ "$1" == "-m51" ]; then
 	make -j8 -C $(pwd) O=$(pwd)/out ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
 fi
 
