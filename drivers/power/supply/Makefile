@@ -83,7 +83,9 @@ obj-$(CONFIG_CHARGER_TPS65217)	+= tps65217_charger.o
 obj-$(CONFIG_AXP288_FUEL_GAUGE) += axp288_fuel_gauge.o
 obj-$(CONFIG_AXP288_CHARGER)	+= axp288_charger.o
 ifeq ($(CONFIG_SEC_A90Q_PROJECT), y)
-obj-$(CONFIG_ARCH_QCOM)		+= qcom_r1/
+obj-$(CONFIG_ARCH_QCOM)        += qcom_r1/
+else ifeq ($(CONFIG_SEC_A70Q_PROJECT), y)
+obj-$(CONFIG_ARCH_QCOM)        += qcom_r1/
 else
 obj-$(CONFIG_ARCH_QCOM)		+= qcom/
 endif
