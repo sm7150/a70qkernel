@@ -78,14 +78,14 @@
 #ifdef CONFIG_LOD_SEC
 #define rkp_is_lod(x) ((x->cred->type)>>3 & 1)
 #endif
-static unsigned int __is_boot_recovery;
+static unsigned int __is_kdp_recovery __kdp_ro;
 
 static int __init boot_recovery(char *str)
 {
 	int temp = 0;
 
 	if (get_option(&str, &temp)) {
-		__is_boot_recovery = temp;
+		__is_kdp_recovery = temp;
 		return 0;
 	}
 
@@ -1280,7 +1280,7 @@ extern int __check_verifiedboot;
 
 static int kdp_check_sb_mismatch(struct super_block *sb)
 {
-	if(__is_boot_recovery || __check_verifiedboot) {
+	if (__is_kdp_recovery || __check_verifiedboot) {
 		return 0;
 	}
 
@@ -1304,7 +1304,7 @@ static int invalid_drive(struct linux_binprm * bprm)
 	}
 	sb = vfsmnt->mnt_sb;
 
-	if(kdp_check_sb_mismatch(sb)) {
+	if (kdp_check_sb_mismatch(sb)) {
 		printk("\n Superblock Mismatch #%s# vfsmnt #%p#sb #%p:%p:%p:%p:%p:%p#\n",
 					bprm->filename, vfsmnt, sb, rootfs_sb, sys_sb, odm_sb, vendor_sb, art_sb);
 		return 1;
