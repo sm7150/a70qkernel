@@ -16,4 +16,4 @@ config CCIC_ALTERNATE_MODE
 	default n
 	help
 	  If you say yes here you will get support for
-	  alternate mode
+		alternate mode
