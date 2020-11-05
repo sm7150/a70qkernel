@@ -12,7 +12,7 @@ echo " " " "
 
 echo "Setting Proper Directories"
 KERNEL_PATH="/home/$USER/a70qkernel"
-BINARIES_PATH="out/arch/arm64/boot/"
+BINARIES_PATH="out/arch/arm64/boot"
 ANYKERNEL_DIR="$(pwd)"
 
 echo "Setting FireKernel Versions"
