@@ -27,6 +27,9 @@ SM6150_DEF=sm6150_sec_defconfig
 USER_BUILDER=firemax13
 USER_TEAM=Fire-CLI.flows
 
+# Targeted Build Variants
+TARGET_BUILD_VARIANT=user
+
 # Toolcahin/Clang Settings, Versions & Name
 BUILD_CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 CLANG_BIN=$TOOLCHAIN_PATH/clang-r377782d/bin/clang
@@ -44,6 +47,7 @@ export REAL_CC=$TOOLCHAIN_PATH/clang-r377782d/bin/clang
 export CLANG_TRIPLE=$CLANG_TRIPLE
 export KBUILD_BUILD_USER=$USER_BUILDER
 export KBUILD_BUILD_HOST=$USER_TEAM
+export TARGET_BUILD_VARIANT=user
 
 # Compile DTB & DTBO Images
 if [ "$3" == "-dv" ]; then
