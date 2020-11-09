@@ -2183,7 +2183,6 @@ static int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval)
 		cpu_smt_control = ctrlval;
 		arch_smt_update();
 	}
-out:
 	cpu_maps_update_done();
 	return ret;
 }

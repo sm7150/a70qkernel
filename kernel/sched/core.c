@@ -1174,8 +1174,6 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
 	if (p->flags & PF_PERF_CRITICAL)
 		new_mask = cpu_perf_mask;
 
-	rq = task_rq_lock(p, &flags);
-
 	/*
 	 * Must re-check here, to close a race against __kthread_bind(),
 	 * sched_setaffinity() is not guaranteed to observe the flag.
