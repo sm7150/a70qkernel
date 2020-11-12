@@ -1078,7 +1078,7 @@ static int __init cdsprm_init(void)
 	init_completion(&gcdsprm.npu_activity_complete);
 	init_completion(&gcdsprm.npu_corner_complete);
 
-	gcdsprm.cdsprm_wq_task = kthread_run(process_cdsp_request_thread,
+	gcdsprm.cdsprm_wq_task = kthread_run_perf_critical(process_cdsp_request_thread,
 					NULL, "cdsprm-wq");
 
 	if (!gcdsprm.cdsprm_wq_task) {
