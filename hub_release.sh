@@ -1,39 +1,50 @@
-#!bin/bash
-# Custom Hub Release Actions for File Releasing
-# Copyright 2021, firemax13@github.com
-
 set -e
 
 # For Hub Release Action & Less efforts
 
+# Skip Echo & Reclean
+echo " "
+echo " "
+echo " "
+echo "HubEffort Less Releaser & File WorkFlows"
+echo " "
 echo " "
 echo "Setting Up Proper Release Name"
-VER="3.9"
-EDITION="FrostExtremeEdition"
-ED="FEE"
-RELEASE_NAME="FireKernel Official Rev $VER $EDITION for Galaxy A70"
-TAG="$VER$ED"
-TAG_COMMIT="$2"
 echo " "
 
-if [ "$1" == "-recursive" ]; then
+# Proper Release Names & Versions
+VER="5.0"
+EDITION="FrostExtremeFrontierEdition"
+ED="FEFE"
+RELEASE_NAME="FireKernel Official Dev $VER $EDITION for Galaxy A80"
+TAG="$VER$ED"
+TAG_COMMIT="$2"
+
+# Skip Echo & Reclean
+echo " " " "
+
+# Use -r (recursive) to bypass no-commit release
+# & make commit with releases
+if [ "$1" == "-r" ]; then
 	echo "Recursive Mode Activated"
-	echo " "
+	echo "Bypassing No Commit Release"
 fi
 
+# Kill if lunch number one is number two
 if [ "$1" == "$2" ]; then
 	^C
 fi
 
-git status
-echo " "
+# Skip Echo & Reclean
+echo " " " "
 
-if [ "$3" == "-no-commit" ]; then
-	echo "Release without commit hashes"
+# Make Releases without Commits
+if [ "$1" == "-nc" ]; then
+	echo " " " " "Releasing Project Without Commit Hashes"
         hub release create -a $(pwd)/AnyKernel3/*.zip -m "$RELEASE_NAME" $TAG
 fi
 
 if [ "$2" == "$TAG_COMMIT" ]; then
-	echo "Releasing with commit hashes"
+	echo " " " " "Releasing Project With Commit Hashes"
 	hub release create -a $(pwd)/AnyKernel3/*.zip -m "$RELEASE_NAME" -t $TAG_COMMIT $TAG
 fi

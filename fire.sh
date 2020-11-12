@@ -7,7 +7,7 @@ echo " "
 
 # Directories & Paths
 KERNEL_PATH=$(pwd)
-TOOLCHAIN_PATH=/home/$USER
+HOME_PATH=/home/$USER
 DIR_NAME=a70qkernel
 
 # Output Path Binaries
@@ -25,14 +25,14 @@ SM6150_DEF=sm6150_sec_defconfig
 
 # User & Team Exportions
 USER_BUILDER=firemax13
-USER_TEAM=Fire-CLI.flows
+USER_TEAM=linux-foundation.org
 
 # Targeted Build Variants
 TARGET_BUILD_VARIANT=user
 
 # Toolcahin/Clang Settings, Versions & Name
-BUILD_CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-CLANG_BIN=$TOOLCHAIN_PATH/clang-r377782d/bin/clang
+GCC_TOOLCHAIN=$HOME_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+CLANG_BIN=$HOME_PATH/clang-r377782d/bin/clang
 CLANG_VEREV=clang-r377782d
 CLANG_TRIPLE=aarch64-linux-gnu-
 
@@ -42,12 +42,11 @@ unset CCACHE_EXEC
 
 # Export Toolchain, Clang & Arch
 export ARCH=arm64
-export CROSS_COMPILE=$TOOLCHAIN_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-export REAL_CC=$TOOLCHAIN_PATH/clang-r377782d/bin/clang
-export CLANG_TRIPLE=$CLANG_TRIPLE
+export CROSS_COMPILE=$GCC_TOOLCHAIN
+export REAL_CC=$CLANG_BIN
+export CLANG_TRIPLE=aarch64-linux-gnu
 export KBUILD_BUILD_USER=$USER_BUILDER
 export KBUILD_BUILD_HOST=$USER_TEAM
-export TARGET_BUILD_VARIANT=user
 
 # Compile DTB & DTBO Images
 if [ "$3" == "-dv" ]; then
@@ -93,4 +92,4 @@ if [ "$3" == "-dv" ]; then
 fi
 
 ls $COMPLETE_OUT_PATH
-echo "4.14.183"
+echo "5.10.0-rc3"

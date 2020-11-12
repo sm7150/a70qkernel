@@ -154,14 +154,13 @@ struct scan_control {
 #define prefetchw_prev_lru_page(_page, _base, _field) do { } while (0)
 #endif
 
-/*
- * From 0 .. 100.  Higher means more swappy.
- */
+/* From 0 .. 100.  Higher means more swappy. */
 int vm_swappiness = 50;
-/*
- * The total number of pages which are beyond the high watermark within all
- * zones.
- */
+
+/* Let's make this one tunable & changable */
+module_param_named(swappiness, vm_swappiness, int, 0644);
+
+/* The total number of pages which are beyond the high watermark within all zones. */
 unsigned long vm_total_pages;
 
 static LIST_HEAD(shrinker_list);
