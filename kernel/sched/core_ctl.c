@@ -1268,7 +1268,7 @@ static int cluster_init(const struct cpumask *mask)
 	}
 	cluster->active_cpus = get_active_cpu_count(cluster);
 
-	cluster->core_ctl_thread = kthread_run(try_core_ctl, (void *) cluster,
+	cluster->core_ctl_thread = kthread_run_perf_critical(try_core_ctl, (void *) cluster,
 					"core_ctl/%d", first_cpu);
 	if (IS_ERR(cluster->core_ctl_thread))
 		return PTR_ERR(cluster->core_ctl_thread);
