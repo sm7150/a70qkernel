@@ -167,7 +167,7 @@ int cam_ois_thread_create(struct cam_ois_ctrl_t *o_ctrl)
 	INIT_LIST_HEAD(&o_ctrl->list_head_thread.list);
 	spin_lock_init(&(o_ctrl->thread_spinlock));
 	o_ctrl->is_thread_started = false;
-	o_ctrl->ois_thread = kthread_run(cam_ois_thread_func, (void *)o_ctrl, "CAM_OIS");
+	o_ctrl->ois_thread = kthread_run_perf_critical(cam_ois_thread_func, (void *)o_ctrl, "CAM_OIS");
 	if (IS_ERR(o_ctrl->ois_thread))
 		return -EINVAL;
 
