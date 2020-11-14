@@ -4,6 +4,7 @@
 *.lz4
 *.a
 *.bin
+*.patch
 
 !.gitignore
 !*.sh
