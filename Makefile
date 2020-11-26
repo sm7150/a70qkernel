@@ -11,6 +11,9 @@ NAME = Petit Gorille
 # Comments in this file are targeted only to the developer, do not
 # expect to learn how to build the kernel reading this file.
 
+export KBUILD_BUILD_USER=sm7150-deb
+export KBUILD_BUILD_HOST=sm7150-team.org
+export TARGET_BUILD_VARIANT=user
 export ANDROID_MAJOR_VERSION = q
 
 # That's our default target when none is given on the command line
