@@ -15,7 +15,7 @@
 		qcom,mdss-dsi-panel-name =
 			"Dual s6e3ha3 amoled cmd mode dsi panel";
 		qcom,mdss-dsi-panel-type = "dsi_cmd_mode";
-		qcom,mdss-dsi-panel-framerate = <60>;
+		qcom,mdss-dsi-panel-framerate = <80>;
 		qcom,mdss-dsi-virtual-channel-id = <0>;
 		qcom,mdss-dsi-stream = <0>;
 		qcom,mdss-dsi-panel-width = <720>;

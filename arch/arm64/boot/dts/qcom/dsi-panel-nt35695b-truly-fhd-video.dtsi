@@ -45,7 +45,7 @@
 				qcom,mdss-dsi-v-back-porch = <2>;
 				qcom,mdss-dsi-v-front-porch = <12>;
 				qcom,mdss-dsi-v-pulse-width = <2>;
-				qcom,mdss-dsi-panel-framerate = <60>;
+				qcom,mdss-dsi-panel-framerate = <80>;
 				qcom,mdss-dsi-h-left-border = <0>;
 				qcom,mdss-dsi-h-right-border = <0>;
 				qcom,mdss-dsi-v-top-border = <0>;

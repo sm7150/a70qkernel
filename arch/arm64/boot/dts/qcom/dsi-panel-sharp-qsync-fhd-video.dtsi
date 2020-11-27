@@ -50,7 +50,7 @@
 				qcom,mdss-dsi-v-back-porch = <14>;
 				qcom,mdss-dsi-v-front-porch = <1968>;
 				qcom,mdss-dsi-v-pulse-width = <2>;
-				qcom,mdss-dsi-panel-framerate = <60>;
+				qcom,mdss-dsi-panel-framerate = <80>;
 				qcom,mdss-dsi-on-command = [
 					39 01 00 00 00 00 02 ff d0
 					39 01 00 00 00 00 02 75 40

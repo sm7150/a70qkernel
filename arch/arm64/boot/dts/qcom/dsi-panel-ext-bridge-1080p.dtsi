@@ -43,7 +43,7 @@
 				qcom,mdss-dsi-v-front-porch = <4>;
 				qcom,mdss-dsi-v-pulse-width = <5>;
 				qcom,mdss-dsi-h-sync-pulse = <0>;
-				qcom,mdss-dsi-panel-framerate = <60>;
+				qcom,mdss-dsi-panel-framerate = <80>;
 				qcom,display-topology = <1 0 1>;
 				qcom,default-topology-index = <0>;
 			};

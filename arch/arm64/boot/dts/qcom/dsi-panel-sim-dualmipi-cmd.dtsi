@@ -94,7 +94,7 @@
 				qcom,mdss-dsi-v-top-border = <0>;
 				qcom,mdss-dsi-v-bottom-border = <0>;
 				qcom,mdss-dsi-h-sync-pulse = <0>;
-				qcom,mdss-dsi-panel-framerate = <60>;
+				qcom,mdss-dsi-panel-framerate = <80>;
 				qcom,mdss-dsi-on-command =
 					[/* exit sleep mode, wait 0ms */
 					05 01 00 00 00 00 01 29];
