@@ -11,9 +11,8 @@ echo "Setting Up Please Wait"
 echo " " " "
 
 echo "Setting Proper Directories"
-KERNEL_PATH="/home/$USER/a70qkernel"
+KERNEL_PATH="$(pwd)/.."
 BINARIES_PATH="out/arch/arm64/boot"
-ANYKERNEL_DIR="$(pwd)"
 
 echo "Setting FireKernel Versions"
 FIRE_KERNEL_VERSION="FireKernel_Revision_3.9"
