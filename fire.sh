@@ -7,8 +7,7 @@ echo " "
 
 # Directories & Paths
 KERNEL_PATH=$(pwd)
-BUILDKITE_HOME_DIR=/var/lib/buildkite-agent
-TOOLCHAIN_PATH=$BUILDKITE_HOME_DIR/toolchain
+TOOLCHAIN_PATH=/var/lib/buildkite-agent/toolchain
 DIR_NAME=a70qkernel
 
 # Output Path Binaries
